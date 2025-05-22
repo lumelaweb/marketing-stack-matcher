@@ -1,10 +1,9 @@
-
 import streamlit as st
 import openai
 import os
 
 # Set your OpenAI API key securely
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.set_page_config(page_title="Marketing Stack Matcher", page_icon="🧩")
 st.title("🧩 Marketing Stack Matcher")
@@ -27,7 +26,7 @@ user_input = st.text_input("Your answer", key="user_input")
 if st.button("Send") and user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.spinner("Thinking..."):
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=st.session_state.messages
         )
